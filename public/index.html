@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudySmart - AI Study Assistant</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-logo">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>StudySmart</span>
+                </div>
+                <div class="nav-menu">
+                    <a href="#study-help" class="nav-link" onclick="showSection('study-help')">
+                        <i class="fas fa-question-circle"></i> Study Help
+                    </a>
+                    <a href="#quiz" class="nav-link" onclick="showSection('quiz')">
+                        <i class="fas fa-clipboard-question"></i> Quiz
+                    </a>
+                    <a href="#study-plan" class="nav-link" onclick="showSection('study-plan')">
+                        <i class="fas fa-calendar-alt"></i> Study Plan
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container">
+        <!-- Study Help Section -->
+        <section id="study-help" class="section active">
+            <div class="section-header">
+                <h1><i class="fas fa-robot"></i> AI Study Assistant</h1>
+                <p>Ask any study question and get detailed explanations with examples</p>
+            </div>
+
+            <div class="input-container">
+                <div class="form-group">
+                    <label for="study-question">What would you like to study?</label>
+                    <textarea 
+                        id="study-question" 
+                        placeholder="e.g., Explain photosynthesis, How do variables work in JavaScript, What is the Pythagorean theorem?"
+                        rows="3"
+                    ></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="subject-select">Subject</label>
+                        <select id="subject-select">
+                            <option value="general">General</option>
+                            <option value="mathematics">Mathematics</option>
+                            <option value="science">Science</option>
+                            <option value="programming">Programming</option>
+                            <option value="history">History</option>
+                            <option value="language">Language Arts</option>
+                            <option value="physics">Physics</option>
+                            <option value="chemistry">Chemistry</option>
+                            <option value="biology">Biology</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="difficulty-select">Difficulty</label>
+                        <select id="difficulty-select">
+                            <option value="beginner">Beginner</option>
+                            <option value="intermediate">Intermediate</option>
+                            <option value="advanced">Advanced</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button id="ask-btn" class="btn btn-primary" onclick="askQuestion()">
+                    <i class="fas fa-paper-plane"></i> Ask StudySmart
+                </button>
+            </div>
+
+            <div id="study-response" class="response-container" style="display: none;">
+                <div class="response-header">
+                    <h3><i class="fas fa-lightbulb"></i> StudySmart Explanation</h3>
+                </div>
+                <div id="study-answer" class="response-content"></div>
+            </div>
+        </section>
+
+        <!-- Quiz Section -->
+        <section id="quiz" class="section">
+            <div class="section-header">
+                <h1><i class="fas fa-clipboard-question"></i> AI Quiz Generator</h1>
+                <p>Generate custom quizzes on any topic to test your knowledge</p>
+            </div>
+
+            <div class="input-container">
+                <div class="form-group">
+                    <label for="quiz-topic">Quiz Topic</label>
+                    <input 
+                        type="text" 
+                        id="quiz-topic" 
+                        placeholder="e.g., World War II, JavaScript Functions, Algebra"
+                    >
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="quiz-questions">Number of Questions</label>
+                        <select id="quiz-questions">
+                            <option value="3">3 Questions</option>
+                            <option value="5" selected>5 Questions</option>
+                            <option value="10">10 Questions</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="quiz-difficulty">Difficulty</label>
+                        <select id="quiz-difficulty">
+                            <option value="easy">Easy</option>
+                            <option value="medium" selected>Medium</option>
+                            <option value="hard">Hard</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button id="generate-quiz-btn" class="btn btn-primary" onclick="generateQuiz()">
+                    <i class="fas fa-magic"></i> Generate Quiz
+                </button>
+            </div>
+
+            <div id="quiz-container" class="quiz-container" style="display: none;">
+                <div class="quiz-header">
+                    <h3 id="quiz-title"></h3>
+                    <div class="quiz-progress">
+                        <span id="question-counter">Question 1 of 5</span>
+                        <div class="progress-bar">
+                            <div id="progress-fill" class="progress-fill"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="quiz-content">
+                    <!-- Quiz questions will be inserted here -->
+                </div>
+
+                <div class="quiz-controls">
+                    <button id="prev-btn" class="btn btn-secondary" onclick="previousQuestion()" style="display: none;">
+                        <i class="fas fa-chevron-left"></i> Previous
+                    </button>
+                    <button id="next-btn" class="btn btn-primary" onclick="nextQuestion()">
+                        Next <i class="fas fa-chevron-right"></i>
+                    </button>
+                    <button id="finish-btn" class="btn btn-success" onclick="finishQuiz()" style="display: none;">
+                        <i class="fas fa-check"></i> Finish Quiz
+                    </button>
+                </div>
+            </div>
+
+            <div id="quiz-results" class="quiz-results" style="display: none;">
+                <!-- Quiz results will be shown here -->
+            </div>
+        </section>
+
+        <!-- Study Plan Section -->
+        <section id="study-plan" class="section">
+            <div class="section-header">
+                <h1><i class="fas fa-calendar-alt"></i> Personalized Study Plan</h1>
+                <p>Get a customized study plan based on your goals and timeline</p>
+            </div>
+
+            <div class="input-container">
+                <div class="form-group">
+                    <label for="plan-subject">Subject</label>
+                    <input 
+                        type="text" 
+                        id="plan-subject" 
+                        placeholder="e.g., JavaScript, Calculus, Biology"
+                    >
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="plan-timeframe">Timeframe</label>
+                        <select id="plan-timeframe">
+                            <option value="1 week">1 Week</option>
+                            <option value="2 weeks">2 Weeks</option>
+                            <option value="1 month" selected>1 Month</option>
+                            <option value="3 months">3 Months</option>
+                            <option value="6 months">6 Months</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="plan-level">Current Level</label>
+                        <select id="plan-level">
+                            <option value="beginner" selected>Beginner</option>
+                            <option value="intermediate">Intermediate</option>
+                            <option value="advanced">Advanced</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="plan-goals">Learning Goals</label>
+                    <textarea 
+                        id="plan-goals" 
+                        placeholder="e.g., Pass the final exam, Build a web application, Understand basic concepts"
+                        rows="2"
+                    ></textarea>
+                </div>
+
+                <button id="create-plan-btn" class="btn btn-primary" onclick="createStudyPlan()">
+                    <i class="fas fa-rocket"></i> Create Study Plan
+                </button>
+            </div>
+
+            <div id="study-plan-response" class="response-container" style="display: none;">
+                <div class="response-header">
+                    <h3><i class="fas fa-map"></i> Your Personalized Study Plan</h3>
+                </div>
+                <div id="study-plan-content" class="response-content"></div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay" style="display: none;">
+        <div class="loading-content">
+            <div class="spinner"></div>
+            <p>StudySmart is thinking...</p>
+        </div>
+    </div>
+
+    <!-- Error Toast -->
+    <div id="error-toast" class="toast error" style="display: none;">
+        <i class="fas fa-exclamation-triangle"></i>
+        <span id="error-message"></span>
+    </div>
+
+    <!-- Success Toast -->
+    <div id="success-toast" class="toast success" style="display: none;">
+        <i class="fas fa-check-circle"></i>
+        <span id="success-message"></span>
+    </div>
+
+    <script src="/js/app.js"></script>
+</body>
+</html>
